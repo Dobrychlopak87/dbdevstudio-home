@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBDEVSTUDIO.pl - Dokumentacja Architektury i Diagramy</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0E0E11;
+            --bg-secondary: #1a1a1f;
+            --bg-card: #24242a;
+            --text-primary: #e2e2e8;
+            --text-secondary: #9a9aa4;
+            --accent: #3D5BFF;
+            --accent-light: #5a75ff;
+            --border: #2e2e36;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0E0E11 100%);
+            padding: 60px 40px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+        }
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p { font-size: 1.2em; color: var(--text-secondary); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .nav { 
+            position: sticky; top: 0; z-index: 100; 
+            background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+            padding: 15px 40px; display: flex; gap: 10px; flex-wrap: wrap;
+        }
+        .nav a {
+            color: var(--text-secondary); text-decoration: none; padding: 8px 16px;
+            border-radius: 8px; font-size: 0.9em; transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active { background: var(--accent); color: white; }
+        .section { margin-bottom: 60px; }
+        .section h2 {
+            font-size: 1.8em; margin-bottom: 20px; padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent); display: flex; align-items: center; gap: 10px;
+        }
+        .section h3 { font-size: 1.3em; color: var(--accent-light); margin: 30px 0 15px; }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .card h4 { color: var(--accent-light); margin-bottom: 15px; font-size: 1.1em; }
+        .mermaid {
+            background: var(--bg-primary); border-radius: 12px; padding: 20px;
+            overflow-x: auto; margin: 20px 0;
+        }
+        .badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.8em; font-weight: 600; margin: 3px;
+        }
+        .badge-primary { background: rgba(61,91,255,0.2); color: var(--accent-light); }
+        .badge-success { background: rgba(34,197,94,0.2); color: var(--success); }
+        .badge-warning { background: rgba(245,158,11,0.2); color: var(--warning); }
+        .badge-danger { background: rgba(239,68,68,0.2); color: var(--danger); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
+        .tech-item {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 15px 20px; text-align: center;
+            flex: 1; min-width: 120px;
+        }
+        .tech-item .name { font-weight: 600; color: var(--accent-light); }
+        .tech-item .version { font-size: 0.85em; color: var(--text-secondary); }
+        .route-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .route-table th, .route-table td {
+            padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border);
+        }
+        .route-table th { background: var(--bg-secondary); color: var(--accent-light); font-weight: 600; }
+        .route-table tr:hover { background: rgba(61,91,255,0.05); }
+        .route-path { font-family: 'Courier New', monospace; color: var(--accent); font-weight: 600; }
+        .file-tree { font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.8; }
+        .file-tree .folder { color: var(--warning); }
+        .file-tree .file { color: var(--text-primary); }
+        .file-tree .comment { color: var(--text-secondary); }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 30px 0; }
+        .stat-box {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 25px; text-align: center;
+        }
+        .stat-box .number { font-size: 2.5em; font-weight: 700; color: var(--accent); }
+        .stat-box .label { color: var(--text-secondary); font-size: 0.9em; margin-top: 5px; }
+        .footer {
+            text-align: center; padding: 40px; border-top: 1px solid var(--border);
+            color: var(--text-secondary); font-size: 0.9em;
+        }
+        .legend { display: flex; gap: 20px; flex-wrap: wrap; margin: 15px 0; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
+        .legend-color { width: 16px; height: 16px; border-radius: 4px; }
+        @media print {
+            .nav { display: none; }
+            .mermaid { overflow: visible; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>DBDEVSTUDIO.pl</h1>
+        <p>Kompletna dokumentacja architektury, struktury i komponentow</p>
+    </div>
+
+    <nav class="nav">
+        <a href="#overview" class="active">Przeglad</a>
+        <a href="#architecture">Architektura</a>
+        <a href="#routing">Routing</a>
+        <a href="#components">Komponenty</a>
+        <a href="#structure">Struktura katalogow</a>
+        <a href="#dataflow">Przeplyw danych</a>
+        <a href="#tech">Stack technologiczny</a>
+        <a href="#features">Funkcjonalnosci</a>
+        <a href="#diagrams">Diagramy</a>
+    </nav>
+
+    <div class="container">
+        <section id="overview" class="section">
+            <h2>Przeglad projektu</h2>
+            <div class="card">
+                <p><strong>DBDEVSTUDIO.pl</strong> to nowoczesna strona internetowa typu Single Page Application (SPA) 
+                zbudowana przy uzyciu React 19 i React Router. Strona pelni funkcje prezentacji studia 
+                projektowego oferujacego uslugi w zakresie tworzenia stron WWW, aplikacji, 
+                projektowania graficznego oraz marketingu digitalowego.</p>
+            </div>
+            <div class="stats">
+                <div class="stat-box"><div class="number">19</div><div class="label">Stron / tras</div></div>
+                <div class="stat-box"><div class="number">15+</div><div class="label">Komponentow React</div></div>
+                <div class="stat-box"><div class="number">25+</div><div class="label">Podkatalogow</div></div>
+                <div class="stat-box"><div class="number">5</div><div class="label">Plikow JS</div></div>
+                <div class="stat-box"><div class="number">2</div><div class="label">Jezyki (PL/EN)</div></div>
+            </div>
+        </section>
+
+        <section id="architecture" class="section">
+            <h2>Architektura aplikacji</h2>
+            <div class="card">
+                <h4>Diagram architektury - wysoki poziom</h4>
+                <div class="mermaid">
+graph TB
+    subgraph "Warstwa Prezentacji"
+        A["Browser / Client"] --> B["React 19 SPA"]
+        B --> C["React Router v7"]
+    end
+    
+    subgraph "Komponenty Strony"
+        C --> D["Layout / App Shell"]
+        D --> E["Header / Navigation"]
+        D --> F["Main Content"]
+        D --> G["Footer"]
+    end
+    
+    subgraph "Strony (Pages)"
+        F --> H["Home (z0)"]
+        F --> I["Studio (k0)"]
+        F --> J["Services (S0)"]
+        F --> K["Portfolio (D0)"]
+        F --> L["Pricing (A0)"]
+        F --> M["Knowledge (B0)"]
+        F --> N["FAQ (U0)"]
+        F --> O["Contact (H0)"]
+        F --> P["Client Zone ($0)"]
+    end
+    
+    subgraph "Podstrony Dynamiczne"
+        J --> Q["Service Details (ma)"]
+        K --> R["Portfolio Details (ma)"]
+        M --> S["Article Details (G0)"]
+    end
+    
+    subgraph "Warstwa Funkcjonalna"
+        T["PWA / Service Worker"]
+        U["Cookie Consent"]
+        V["SEO Enhancement"]
+        W["Auth / Client Portal"]
+    end
+    
+    B --> T
+    B --> U
+    B --> V
+    B --> W
+    
+    style A fill:#3D5BFF,color:#fff
+    style B fill:#5a75ff,color:#fff
+    style D fill:#22c55e,color:#fff
+    style F fill:#f59e0b,color:#fff
+                </div>
+            </div>
+
+            <div class="card">
+                <h4>Diagram relacji komponentow</h4>
+                <div class="mermaid">
+graph TB
+    subgraph "Root"
+        ROOT["<App />"]
+    end
+    
+    subgraph "Layout Components"
+        NAV["<Navigation />"]
+        SKIP["<SkipLink />"]
+        MAIN["<Main />"]
+        FOOT["<Footer />"]
+    end
+    
+    subgraph "Page Components"
+        HOME["<HomePage /> z0"]
+        STUDIO["<StudioPage /> k0"]
+        SERV["<ServicesPage /> S0"]
+        PORT["<PortfolioPage /> D0"]
+        PRICE["<PricingPage /> A0"]
+        KNOW["<KnowledgePage /> B0"]
+        FAQ["<FAQPage /> U0"]
+        CONT["<ContactPage /> H0"]
+        CLIENT["<ClientZone /> $0"]
+        STATIC["<StaticPage /> ma"]
+        ART["<ArticlePage /> G0"]
+    end
+    
+    subgraph "Shared Components"
+        HERO["<HeroSection />"]
+        CARD["<ServiceCard />"]
+        PROJ["<ProjectCard />"]
+        FORM["<ContactForm />"]
+        BREAD["<Breadcrumbs />"]
+        MARQ["<Marquee />"]
+        COOKIE["<CookieDialog />"]
+    end
+    
+    ROOT --> NAV
+    ROOT --> SKIP
+    ROOT --> MAIN
+    ROOT --> FOOT
+    MAIN --> HOME
+    MAIN --> STUDIO
+    MAIN --> SERV
+    MAIN --> PORT
+    MAIN --> PRICE
+    MAIN --> KNOW
+    MAIN --> FAQ
+    MAIN --> CONT
+    MAIN --> CLIENT
+    MAIN --> STATIC
+    MAIN --> ART
+    
+    HOME --> HERO
+    HOME --> CARD
+    HOME --> PROJ
+    STUDIO --> HERO
+    SERV --> CARD
+    PORT --> PROJ
+    KNOW --> CARD
+    CONT --> FORM
+    CLIENT --> FORM
+    
+    style ROOT fill:#3D5BFF,color:#fff,stroke-width:3px
+    style NAV fill:#5a75ff,color:#fff
+    style HOME fill:#22c55e,color:#fff
+    style SERV fill:#22c55e,color:#fff
+    style PORT fill:#f59e0b,color:#fff
+    style CONT fill:#ef4444,color:#fff
+    style CLIENT fill:#8b5cf6,color:#fff
+                </div>
+            </div>
+        </section>
+
+        <section id="routing" class="section">
+            <h2>Struktura routingu</h2>
+            <div class="card">
+                <h4>Tabela tras (Routes)</h4>
+                <table class="route-table">
+                    <thead>
+                        <tr><th>Sciezka</th><th>Komponent</th><th>Typ</th><th>Opis</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="route-path">/</td><td>z0 (HomePage)</td><td><span class="badge badge-primary">Strona</span></td><td>Strona glowna / Landing</td></tr>
+                        <tr><td class="route-path">/studio</td><td>k0 (StudioPage)</td><td><span class="badge badge-primary">Strona</span></td><td>O nas / Studio</td></tr>
+                        <tr><td class="route-path">/uslugi</td><td>S0 (ServicesPage)</td><td><span class="badge badge-primary">Strona</span></td><td>Lista uslug</td></tr>
+                        <tr><td class="route-path">/uslugi/www</td><td>ma (ServiceDetail)</td><td><span class="badge badge-warning">Podstrona</span></td><td>Strony WWW</td></tr>
+                        <tr><td class="route-path">/uslugi/aplikacje</td><td>ma (ServiceDetail)</td><td><span class="badge badge-warning">Podstrona</span></td><td>Aplikacje</td></tr>
+                        <tr><td class="route-path">/uslugi/design</td><td>ma (ServiceDetail)</td><td><span class="badge badge-warning">Podstrona</span></td><td>Projektowanie</td></tr>
+                        <tr><td class="route-path">/uslugi/marketing</td><td>ma (ServiceDetail)</td><td><span class="badge badge-warning">Podstrona</span></td><td>Marketing</td></tr>
+                        <tr><td class="route-path">/realizacje</td><td>D0 (PortfolioPage)</td><td><span class="badge badge-primary">Strona</span></td><td>Portfolio</td></tr>
+                        <tr><td class="route-path">/realizacje/:slug</td><td>ma (ProjectDetail)</td><td><span class="badge badge-warning">Dynamiczna</span></td><td>Szczegoly projektu</td></tr>
+                        <tr><td class="route-path">/cennik</td><td>A0 (PricingPage)</td><td><span class="badge badge-primary">Strona</span></td><td>Cennik</td></tr>
+                        <tr><td class="route-path">/wiedza</td><td>B0 (KnowledgePage)</td><td><span class="badge badge-primary">Strona</span></td><td>Baza wiedzy</td></tr>
+                        <tr><td class="route-path">/wiedza/slownik</td><td>ma (Dictionary)</td><td><span class="badge badge-warning">Podstrona</span></td><td>Slownik pojec</td></tr>
+                        <tr><td class="route-path">/wiedza/:slug</td><td>G0 (ArticlePage)</td><td><span class="badge badge-warning">Dynamiczna</span></td><td>Artykul</td></tr>
+                        <tr><td class="route-path">/faq</td><td>U0 (FAQPage)</td><td><span class="badge badge-primary">Strona</span></td><td>FAQ</td></tr>
+                        <tr><td class="route-path">/kontakt</td><td>H0 (ContactPage)</td><td><span class="badge badge-primary">Strona</span></td><td>Kontakt</td></tr>
+                        <tr><td class="route-path">/strefa-klienta</td><td>$0 (ClientZone)</td><td><span class="badge badge-success">Auth</span></td><td>Strefa klienta</td></tr>
+                        <tr><td class="route-path">/reset-hasla</td><td>-</td><td><span class="badge badge-success">Auth</span></td><td>Reset hasla</td></tr>
+                        <tr><td class="route-path">/polityka-prywatnosci</td><td>ma (StaticPage)</td><td><span class="badge badge-danger">Legal</span></td><td>Polityka prywatnosci</td></tr>
+                        <tr><td class="route-path">/rodo</td><td>ma (StaticPage)</td><td><span class="badge badge-danger">Legal</span></td><td>RODO</td></tr>
+                        <tr><td class="route-path">/regulamin</td><td>ma (StaticPage)</td><td><span class="badge badge-danger">Legal</span></td><td>Regulamin</td></tr>
+                        <tr><td class="route-path">/regulamin-promocji</td><td>ma (StaticPage)</td><td><span class="badge badge-danger">Legal</span></td><td>Regulamin promocji</td></tr>
+                        <tr><td class="route-path">/cookies</td><td>ma (StaticPage)</td><td><span class="badge badge-danger">Legal</span></td><td>Polityka cookies</td></tr>
+                        <tr><td class="route-path">/dostepnosc</td><td>ma (StaticPage)</td><td><span class="badge badge-danger">Legal</span></td><td>Deklaracja dostepnosci</td></tr>
+                        <tr><td class="route-path">/404</td><td>-</td><td><span class="badge badge-danger">Error</span></td><td>Strona 404</td></tr>
+                        <tr><td class="route-path">*</td><td>404</td><td><span class="badge badge-danger">Error</span></td><td>Fallback</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h4>Diagram routingu</h4>
+                <div class="mermaid">
+flowchart LR
+    subgraph "Router"
+        R["BrowserRouter"]
+    end
+    
+    subgraph "Glowne trasy"
+        R -->|"/"| H["Home"]
+        R -->|"/studio"| ST["Studio"]
+        R -->|"/uslugi"| SE["Services"]
+        R -->|"/realizacje"| PO["Portfolio"]
+        R -->|"/cennik"| PR["Pricing"]
+        R -->|"/wiedza"| KN["Knowledge"]
+        R -->|"/faq"| FQ["FAQ"]
+        R -->|"/kontakt"| CO["Contact"]
+        R -->|"/strefa-klienta"| CZ["Client Zone"]
+    end
+    
+    subgraph "Podstrony uslug"
+        SE -->|"/www"| S1["WWW"]
+        SE -->|"/aplikacje"| S2["Aplikacje"]
+        SE -->|"/design"| S3["Design"]
+        SE -->|"/marketing"| S4["Marketing"]
+    end
+    
+    subgraph "Podstrony portfolio"
+        PO -->|"/:slug"| P1["kurier-ai"]
+        PO -->|"/:slug"| P2["nano4hr"]
+        PO -->|"/:slug"| P3["tiktok-reel..."]
+    end
+    
+    subgraph "Podstrony wiedzy"
+        KN -->|"/slownik"| K1["Slownik"]
+        KN -->|"/:slug"| K2["Artykul"]
+    end
+    
+    subgraph "Strony legalne"
+        R -->|"/polityka..."| L1["Polityka"]
+        R -->|"/rodo"| L2["RODO"]
+        R -->|"/regulamin"| L3["Regulamin"]
+        R -->|"/cookies"| L4["Cookies"]
+        R -->|"/dostepnosc"| L5["Dostepnosc"]
+    end
+    
+    subgraph "Auth"
+        R -->|"/reset-hasla"| A1["Reset hasla"]
+    end
+    
+    R -->|"*"| E404["404 Not Found"]
+    
+    style H fill:#3D5BFF,color:#fff
+    style CZ fill:#8b5cf6,color:#fff
+    style E404 fill:#ef4444,color:#fff
+                </div>
+            </div>
+        </section>
+
+        <section id="components" class="section">
+            <h2>Komponenty React</h2>
+            <div class="card">
+                <h4>Diagram komponentow ze szczegolami</h4>
+                <div class="mermaid">
+graph TB
+    subgraph "App [Root]"
+        direction TB
+        A["createBrowserRouter"]
+        
+        subgraph "Routes"
+            R1["/ -> HomePage (z0)"]
+            R2["/studio -> StudioPage (k0)"]
+            R3a["/uslugi -> ServicesPage (S0)"]
+            R3b["/uslugi/* -> ServiceDetail (ma)"]
+            R4a["/realizacje -> PortfolioPage (D0)"]
+            R4b["/realizacje/:slug -> ProjectDetail (ma)"]
+            R5["/cennik -> PricingPage (A0)"]
+            R6a["/wiedza -> KnowledgePage (B0)"]
+            R6b["/wiedza/slownik -> Dictionary (ma)"]
+            R6c["/wiedza/:slug -> ArticlePage (G0)"]
+            R7["/faq -> FAQPage (U0)"]
+            R8["/kontakt -> ContactPage (H0)"]
+            R9["/strefa-klienta -> ClientZone ($0)"]
+            R10["Legal Pages -> StaticPage (ma)"]
+            R11["* -> NotFound"]
+        end
+    end
+    
+    subgraph "HomePage [z0]"
+        H1["HeroSection - 4 obrazy"]
+        H2["Marquee / Ticker"]
+        H3["ServicesGrid"]
+        H4["PortfolioPreview"]
+        H5["CTA Section"]
+    end
+    
+    subgraph "StudioPage [k0]"
+        S1["HeroSection"]
+        S2["AboutContent"]
+        S3["TeamSection"]
+    end
+    
+    subgraph "ServicesPage [S0]"
+        SV1["ServicesList"]
+        SV2["ServiceCard x4"]
+    end
+    
+    subgraph "PortfolioPage [D0]"
+        P1["ProjectsGrid"]
+        P2["ProjectCard x4+"]
+    end
+    
+    subgraph "ContactPage [H0]"
+        C1["ContactForm"]
+        C2["ContactInfo"]
+        C3["MapSection"]
+    end
+    
+    subgraph "ClientZone [$0]"
+        CL1["LoginForm"]
+        CL2["ClientDashboard"]
+        CL3["FileManager"]
+    end
+    
+    R1 --> H1
+    R2 --> S1
+    R3a --> SV1
+    R4a --> P1
+    R8 --> C1
+    R9 --> CL1
+    
+    style A fill:#3D5BFF,color:#fff
+    style R1 fill:#22c55e,color:#fff
+    style R9 fill:#8b5cf6,color:#fff
+                </div>
+            </div>
+
+            <div class="card">
+                <h4>Drzewo komponentow - strona glowna</h4>
+                <div class="mermaid">
+graph TD
+    App --> Layout
+    Layout --> Header["Header / Navigation"]
+    Layout --> Main
+    Layout --> Footer
+    
+    Main --> HomePage
+    
+    HomePage --> Hero["HeroSection"]
+    HomePage --> Marquee["MarqueeTicker"]
+    HomePage --> ServicesPreview["ServicesPreview"]
+    HomePage --> PortfolioPreview["PortfolioPreview"]
+    HomePage --> CTASection["CTASection"]
+    HomePage --> FooterCTA["FooterCTA"]
+    
+    Hero --> HeroImage1["HeroImage: WWW"]
+    Hero --> HeroImage2["HeroImage: Apps"]
+    Hero --> HeroImage3["HeroImage: Design"]
+    Hero --> HeroImage4["HeroImage: SEO"]
+    
+    ServicesPreview --> ServiceCard1["ServiceCard: Strony"]
+    ServicesPreview --> ServiceCard2["ServiceCard: Aplikacje"]
+    ServicesPreview --> ServiceCard3["ServiceCard: Design"]
+    ServicesPreview --> ServiceCard4["ServiceCard: Marketing"]
+    
+    PortfolioPreview --> ProjectCard1["ProjectCard: Kurier AI"]
+    PortfolioPreview --> ProjectCard2["ProjectCard: Nano4HR"]
+    PortfolioPreview --> ProjectCard3["ProjectCard: TikTok Studio"]
+    PortfolioPreview --> ProjectCard4["ProjectCard: Winnica"]
+    
+    CTASection --> CTAButton["CTAButton: Bezplatna wycena"]
+    
+    style App fill:#3D5BFF,color:#fff
+    style HomePage fill:#22c55e,color:#fff
+    style Hero fill:#5a75ff,color:#fff
+                </div>
+            </div>
+        </section>
+
+        <section id="structure" class="section">
+            <h2>Struktura katalogow</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>Drzewo katalogow</h4>
+                    <div class="file-tree">
+<span class="folder">dbdevstudio.pl/</span><br/>
+├── <span class="folder">assets/</span>                    <span class="comment"># Zasoby statyczne JS/CSS</span><br/>
+│   ├── <span class="file">app.js</span>                     <span class="comment"># Glowny bundle React</span><br/>
+│   ├── <span class="file">app.css</span>                    <span class="comment"># Style glowne</span><br/>
+│   ├── <span class="file">fonts.css</span>                  <span class="comment"># Definicje fontow</span><br/>
+│   ├── <span class="file">enhancements.js</span>            <span class="comment"># SEO, cookies, accessibility</span><br/>
+│   ├── <span class="file">register-sw.js</span>             <span class="comment"># Rejestracja Service Workera</span><br/>
+│   ├── <span class="file">password-reset.js</span>          <span class="comment"># Reset hasla</span><br/>
+│   └── <span class="folder">fonts/</span>                   <span class="comment"># Fonty (Inter, Space Grotesk)</span><br/>
+│       ├── <span class="file">inter.woff2</span><br/>
+│       └── <span class="file">space-grotesk.woff2</span><br/>
+├── <span class="folder">icons/</span>                     <span class="comment"># Ikony PWA/Favicon</span><br/>
+├── <span class="folder">images/</span>                    <span class="comment"># Obrazy</span><br/>
+│   ├── <span class="folder">hero/</span>                      <span class="comment"># Hero images (4 kategorie)</span><br/>
+│   ├── <span class="folder">portfolio/</span>               <span class="comment"># Zdjecia portfolio</span><br/>
+│   ├── <span class="folder">placeholders/</span>            <span class="comment"># Placeholdery</span><br/>
+│   └── <span class="folder">misc/</span>                      <span class="comment"># CTA background</span><br/>
+├── <span class="folder">client-files/</span>              <span class="comment"># Pliki klientow</span><br/>
+├── <span class="folder">cennik/</span>                    <span class="comment"># Cennik</span><br/>
+├── <span class="folder">cookies/</span>                   <span class="comment"># Polityka cookies</span><br/>
+├── <span class="folder">dostepnosc/</span>                <span class="comment"># Deklaracja dostepnosci</span><br/>
+├── <span class="folder">faq/</span>                       <span class="comment"># FAQ</span><br/>
+├── <span class="folder">kontakt/</span>                   <span class="comment"># Kontakt</span><br/>
+├── <span class="folder">polityka-prywatnosci/</span>      <span class="comment"># Polityka prywatnosci</span><br/>
+├── <span class="folder">realizacje/</span>                <span class="comment"># Portfolio</span><br/>
+├── <span class="folder">regulamin/</span>                 <span class="comment"># Regulamin</span><br/>
+├── <span class="folder">rodo/</span>                      <span class="comment"># RODO</span><br/>
+├── <span class="folder">strefa-klienta/</span>            <span class="comment"># Strefa klienta</span><br/>
+├── <span class="folder">studio/</span>                    <span class="comment"># O nas</span><br/>
+├── <span class="folder">uslugi/</span>                    <span class="comment"># Uslugi</span><br/>
+├── <span class="folder">wiedza/</span>                    <span class="comment"># Baza wiedzy / Blog</span><br/>
+├── <span class="file">index.html</span>                 <span class="comment"># Entry point SPA</span><br/>
+├── <span class="file">manifest.json</span>              <span class="comment"># PWA Manifest</span><br/>
+└── <span class="file">sw.js</span>                      <span class="comment"># Service Worker</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>Statystyki struktury</h4>
+                    <div class="stats">
+                        <div class="stat-box"><div class="number">46</div><div class="label">Katalogow</div></div>
+                        <div class="stat-box"><div class="number">33</div><div class="label">Plikow HTML</div></div>
+                        <div class="stat-box"><div class="number">5</div><div class="label">Plikow JS</div></div>
+                        <div class="stat-box"><div class="number">2</div><div class="label">Pliki CSS</div></div>
+                        <div class="stat-box"><div class="number">30+</div><div class="label">Obrazow</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dataflow" class="section">
+            <h2>Przeplyw danych</h2>
+            <div class="card">
+                <h4>Diagram przeplywu danych i zaleznosci</h4>
+                <div class="mermaid">
+flowchart TD
+    subgraph "Zrodla danych"
+        CONFIG["Konfiguracja aplikacji"]
+        ROUTES["Definicje tras"]
+        I18N["Tlumaczenia PL/EN"]
+        API["Backend API"]
+    end
+    
+    subgraph "Warstwa Stanu"
+        AUTH["Auth Context"]
+        THEME["Theme Context"]
+        COOKIE["Cookie Store"]
+        LANG["Language State"]
+    end
+    
+    subgraph "Warstwa Renderowania"
+        ROUTER["React Router"]
+        PAGES["Page Components"]
+        SHARED["Shared Components"]
+    end
+    
+    subgraph "Efekty uboczne"
+        SEO["SEO Enhancement"]
+        SW["Service Worker"]
+        ANALYTICS["Analytics"]
+        COOKIE_DIALOG["Cookie Dialog"]
+    end
+    
+    CONFIG --> ROUTER
+    ROUTES --> ROUTER
+    I18N --> PAGES
+    API --> AUTH
+    
+    AUTH --> PAGES
+    THEME --> SHARED
+    COOKIE --> ANALYTICS
+    LANG --> PAGES
+    
+    ROUTER --> PAGES
+    PAGES --> SHARED
+    
+    PAGES --> SEO
+    PAGES --> SW
+    COOKIE --> COOKIE_DIALOG
+    
+    style CONFIG fill:#3D5BFF,color:#fff
+    style AUTH fill:#8b5cf6,color:#fff
+    style SEO fill:#22c55e,color:#fff
+    style SW fill:#f59e0b,color:#fff
+                </div>
+            </div>
+
+            <div class="card">
+                <h4>Sekwencja zaladowania aplikacji</h4>
+                <div class="mermaid">
+sequenceDiagram
+    participant U as Uzytkownik
+    participant B as Browser
+    participant S as Server/CDN
+    participant R as React App
+    participant SW as Service Worker
+    
+    U->>B: Wpisuje URL
+    B->>S: GET /index.html
+    S-->>B: HTML + CSS + JS
+    B->>R: Inicjalizacja React
+    
+    par Ladowanie zasobow
+        R->>S: Pobierz app.js
+        R->>S: Pobierz app.css
+        R->>S: Pobierz fonts
+    end
+    
+    R->>R: Hydracja komponentow
+    R->>SW: Rejestracja SW
+    SW->>B: Cache zasobow
+    R->>R: Dopasowanie trasy
+    R->>U: Render strony
+    
+    opt Strefa klienta
+        U->>R: Login / Haslo
+        R->>S: Auth request
+        S-->>R: Token JWT
+        R->>U: Dashboard klienta
+    end
+    
+    opt Cookie consent
+        R->>R: Sprawdz localStorage
+        R->>U: Wyswietl dialog
+        U->>R: Wybor zgody
+        R->>R: Zapisz w localStorage
+    end
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" class="section">
+            <h2>Stack technologiczny</h2>
+            <div class="card">
+                <h4>Technologie i biblioteki</h4>
+                <div class="tech-stack">
+                    <div class="tech-item"><div class="name">React 19</div><div class="version">19.2.6</div></div>
+                    <div class="tech-item"><div class="name">React Router</div><div class="version">v7</div></div>
+                    <div class="tech-item"><div class="name">Vite</div><div class="version">Bundler</div></div>
+                    <div class="tech-item"><div class="name">Tailwind CSS</div><div class="version">v3</div></div>
+                    <div class="tech-item"><div class="name">PWA</div><div class="version">Service Worker</div></div>
+                    <div class="tech-item"><div class="name">Inter</div><div class="version">Font</div></div>
+                    <div class="tech-item"><div class="name">Space Grotesk</div><div class="version">Font</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <h2>Funkcjonalnosci</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>Podstawowe funkcje</h4>
+                    <ul style="list-style:none;padding:0">
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Single Page Application (SPA)</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Routing client-side</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Progressive Web App (PWA)</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Service Worker + offline cache</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Dwujezycznosc (PL/EN)</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Dark/Light mode</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var("border")">&#10003; Responsywny design (mobile-first)</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; SEO (Server-Side Rendering ready)</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Open Graph / Twitter Cards</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Schema.org structured data</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Breadcrumbs navigation</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Skip link (dostepnosc)</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Cookie consent dialog</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)">&#10003; Strefa klienta (auth)</li>
+                        <li style="padding:8px 0">&#10003; Reset hasla</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Strony i sekcje</h4>
+                    <ul style="list-style:none;padding:0">
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">Glowna</span> Hero, uslugi, portfolio, CTA</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">Studio</span> O firmie, zespol</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">Uslugi</span> 4 kategorie uslug</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">Realizacje</span> Portfolio z projektami</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">Cennik</span> Cennik uslug</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">Wiedza</span> Baza wiedzy / blog</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">FAQ</span> Najczesciej zadawane pytania</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-primary">Kontakt</span> Formularz kontaktowy</li>
+                        <li style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="badge badge-success">Klient</span> Strefa klienta z logowaniem</li>
+                        <li style="padding:8px 0"><span class="badge badge-danger">Legal</span> 6 stron prawnych</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="diagrams" class="section">
+            <h2>Podsumowanie diagramow</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>Diagram 1: Architektura systemu</h4>
+                    <div class="mermaid">
+graph TB
+    subgraph "Frontend Layer"
+        A["Browser"] --> B["React 19 SPA"]
+        B --> C["React Router v7"]
+    end
+    
+    subgraph "Application Layer"
+        C --> D["Layout: Header + Main + Footer"]
+        D --> E["Page Components"]
+        E --> F["Shared Components"]
+    end
+    
+    subgraph "Feature Layer"
+        G["PWA Features"]
+        H["Auth System"]
+        I["SEO Enhancement"]
+        J["Cookie Consent"]
+        K["i18n PL/EN"]
+    end
+    
+    B --> G
+    B --> H
+    B --> I
+    B --> J
+    B --> K
+    
+    style A fill:#3D5BFF,color:#fff
+    style B fill:#5a75ff,color:#fff
+    style E fill:#22c55e,color:#fff
+    style H fill:#8b5cf6,color:#fff
+                </div>
+                </div>
+                <div class="card">
+                    <h4>Diagram 2: Struktura routingu</h4>
+                    <div class="mermaid">
+flowchart LR
+    subgraph "Router"
+        R["createBrowserRouter"]
+    end
+    subgraph "Pages"
+        R --> H["/"]
+        R --> S1["/studio"]
+        R --> S2["/uslugi"]
+        R --> S3["/realizacje"]
+        R --> S4["/cennik"]
+        R --> S5["/wiedza"]
+        R --> S6["/faq"]
+        R --> S7["/kontakt"]
+        R --> S8["/strefa-klienta"]
+    end
+    subgraph "Sub-pages"
+        S2 --> S2a["/www"]
+        S2 --> S2b["/aplikacje"]
+        S2 --> S2c["/design"]
+        S2 --> S2d["/marketing"]
+        S3 --> S3a["/:slug"]
+        S5 --> S5a["/slownik"]
+        S5 --> S5b["/:slug"]
+    end
+    subgraph "Legal"
+        R --> L1["/polityka-prywatnosci"]
+        R --> L2["/rodo"]
+        R --> L3["/regulamin"]
+        R --> L4["/cookies"]
+        R --> L5["/dostepnosc"]
+    end
+    style R fill:#3D5BFF,color:#fff
+    style H fill:#22c55e,color:#fff
+    style S8 fill:#8b5cf6,color:#fff
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>Dokumentacja wygenerowana automatycznie na podstawie analizy kodu zrodlowego DBDEVSTUDIO.pl</p>
+            <p style="margin-top:10px">Data analizy: 13 lipca 2026 | Narzedzia: Code-to-Diagram + manualna analiza</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#3D5BFF',
+                primaryTextColor: '#e2e2e8',
+                primaryBorderColor: '#5a75ff',
+                lineColor: '#5a75ff',
+                secondaryColor: '#1a1a1f',
+                tertiaryColor: '#24242a',
+                fontFamily: 'Inter, sans-serif'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        document.querySelectorAll('.nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
