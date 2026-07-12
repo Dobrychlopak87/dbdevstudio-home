@@ -1,0 +1,20 @@
+PLIKI KLIENTOW — INSTRUKCJA DLA ADMINISTRATORA
+
+Każdy klient ma osobny katalog o nazwie:
+
+    ID_UŻYTKOWNIKA--ADRES_EMAIL
+
+Przykład:
+
+    u_7a809d4f1e441957--dobry2013chlopak_at_gmail.com
+
+Aby udostępnić pliki klientowi, wystarczy wrzucić je do jego katalogu.
+Pliki będą widoczne w strefie klienta po zalogowaniu.
+
+ZASADY BEZPIECZEŃSTWA:
+- Nie udostępniaj katalogów bezpośrednio przez HTTP (blokuje .htaccess)
+- Dostęp tylko przez API po uwierzytelnieniu
+- Pliki powinny być skanowane przed umieszczeniem
+
+KONTAKT:
+W razie problemów: kontakt@dbdevstudio.pl
