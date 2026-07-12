@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #3D5BFF;
+    --color-primary-dark: #3050dd;
+    --color-bg: #0E0E11;
+    --color-bg-light: #1a1a1f;
+    --color-bg-card: #24242a;
+    --color-text: #e2e2e8;
+    --color-text-muted: #9a9aa4;
+    --color-border: #2e2e36;
+    --color-accent: #ffcc33;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Space Grotesk', var(--font-sans);
+  }
+
+  * {
+    @apply border-[var(--color-border)];
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  a {
+    @apply text-[var(--color-primary)] transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply text-[var(--color-primary-dark)];
+  }
+
+  img {
+    @apply max-w-full h-auto;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .container-main {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] shadow-lg shadow-[var(--color-primary)]/30;
+  }
+
+  .btn-secondary {
+    @apply btn border border-[var(--color-border)] hover:bg-white/5;
+  }
+
+  .card {
+    @apply bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] bg-clip-text text-transparent;
+  }
+
+  .marquee {
+    @apply flex whitespace-nowrap overflow-hidden;
+  }
+
+  .marquee-content {
+    @apply flex animate-marquee;
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* Dialog styles */
+dialog {
+  @apply max-w-lg w-full mx-auto p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)];
+}
+
+dialog::backdrop {
+  @apply bg-black/60 backdrop-blur-sm;
+}
+
+/* Form styles */
+input, textarea, select {
+  @apply w-full px-4 py-3 rounded-xl bg-[var(--color-bg-light)] border border-[var(--color-border)] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all;
+}
+
+label {
+  @apply block text-sm font-medium text-[var(--color-text-muted)] mb-1.5;
+}
+
+/* Skip link accessibility */
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -5rem;
+  z-index: 9999;
+  background: #fff;
+  color: #111;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  @apply flex items-center gap-2 text-sm text-[var(--color-text-muted)];
+}
+
+.breadcrumbs a {
+  @apply hover:text-[var(--color-primary)];
+}
+
+.breadcrumbs [aria-current="page"] {
+  @apply text-[var(--color-text)] font-medium;
+}
