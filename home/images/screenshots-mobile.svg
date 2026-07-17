@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#0E0E11"/>
+  <rect x="40" y="40" width="1200" height="640" rx="24" fill="#24242a" stroke="#3D5BFF" stroke-opacity="0.3"/>
+  <text x="640" y="360" text-anchor="middle" fill="#e2e2e8" font-family="sans-serif" font-size="32" font-weight="700">DBDEVSTUDIO – screenshots-mobile</text>
+</svg>

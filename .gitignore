@@ -1,0 +1,14 @@
+# Ignore generic archives but allow production
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+# Ignore temp zip but allow prod
+*.zip
+*.tar.gz
+!dbdevstudio-home-production-*.zip
+!dbdevstudio-home-production-*.tar.gz
+!*.min.*
+client-files/.ratelimit/*.json
+client-files/.ratelimit/*.log
+image-search/

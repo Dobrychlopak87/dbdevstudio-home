@@ -1,0 +1,83 @@
+# DBDEVSTUDIO - Production .htaccess v2026.07.17
+# Security + SPA Router + Performance
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Force HTTPS (uncomment on production with SSL)
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Protect sensitive files
+  RewriteRule ^(api\.php|dbdevstudio\.sqlite|\.htaccess|\.env|composer\.json|package\.json) - [F,L,NC]
+  RewriteRule ^client-files/ - [F,L,NC]
+  # Also via direct .htaccess in client-files
+
+  # Don't rewrite existing files/dirs and api, assets, icons, images, sw.js, manifest, sitemap, robots
+  RewriteCond %{REQUEST_URI} ^/(assets|icons|images|client-files)/ [OR]
+  RewriteCond %{REQUEST_URI} ^/(api\.php|sw\.js|manifest\.json|sitemap\.xml|robots\.txt|favicon\.ico) [NC]
+  RewriteRule ^ - [L]
+
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # SPA fallback: serve index.html for all other routes
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-XSS-Protection "0"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+  # Remove server signature
+  Header unset Server
+  Header unset X-Powered-By
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml font/woff2 font/woff
+</IfModule>
+
+# Caching
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/json "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpg "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# Prevent access to .sqlite, .log, .env
+<FilesMatch "\.(sqlite|sqlite3|db|log|env|git|htaccess|htpasswd)$">
+  Require all denied
+</FilesMatch>
+
+# PHP hardening (if mod_php)
+# php_flag display_errors Off
+# php_value error_reporting 0
+
+# Error docs - use index.html for SPA 404 handling via JS, but keep 404 status via JS router
+ErrorDocument 404 /index.html
