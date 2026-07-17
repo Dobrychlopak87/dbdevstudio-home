@@ -15,6 +15,7 @@
     --color-accent: #ffcc33;
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
     --font-display: 'Space Grotesk', var(--font-sans);
+    --radius-standard: 16px;
   }
 
   * {
@@ -40,11 +41,11 @@
   }
 
   a {
-    @apply text-[var(--color-primary)] transition-colors duration-200;
+    @apply text-[var(--color-primary)] transition-all duration-300;
   }
 
   a:hover {
-    @apply text-[var(--color-primary-dark)];
+    @apply text-[var(--color-accent)];
   }
 
   img {
@@ -55,6 +56,24 @@
     outline: 3px solid var(--color-accent);
     outline-offset: 3px;
   }
+
+  /* Menu Hover Effect */
+  header nav a, .nav-link {
+    @apply transition-all duration-300 hover:text-[var(--color-accent)];
+  }
+
+  /* Dropdown Styles */
+  .dropdown {
+    @apply absolute top-full left-0 mt-2 w-48 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[var(--radius-standard)] shadow-xl opacity-0 invisible translate-y-2 transition-all duration-300 z-50;
+  }
+
+  .has-dropdown:hover .dropdown {
+    @apply opacity-100 visible translate-y-0;
+  }
+
+  .dropdown-item {
+    @apply block px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-white/5 transition-colors;
+  }
 }
 
 @layer components {
@@ -63,11 +82,11 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300;
   }
 
   .btn-primary {
-    @apply btn bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] shadow-lg shadow-[var(--color-primary)]/30;
+    @apply btn bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] shadow-lg shadow-[var(--color-primary)]/30 hover:scale-105;
   }
 
   .btn-secondary {
@@ -75,7 +94,7 @@
   }
 
   .card {
-    @apply bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6;
+    @apply bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-[var(--radius-standard)] p-6 transition-all duration-300 hover:border-[var(--color-primary)];
   }
 
   .section-padding {
@@ -145,11 +164,11 @@
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-standard);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: var(--color-primary);
 }
 
 /* Selection */
@@ -160,7 +179,7 @@
 
 /* Dialog styles */
 dialog {
-  @apply max-w-lg w-full mx-auto p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)];
+  @apply max-w-lg w-full mx-auto p-6 rounded-[var(--radius-standard)] border border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)];
 }
 
 dialog::backdrop {
@@ -169,7 +188,7 @@ dialog::backdrop {
 
 /* Form styles */
 input, textarea, select {
-  @apply w-full px-4 py-3 rounded-xl bg-[var(--color-bg-light)] border border-[var(--color-border)] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all;
+  @apply w-full px-4 py-3 rounded-[var(--radius-standard)] bg-[var(--color-bg-light)] border border-[var(--color-border)] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all;
 }
 
 label {

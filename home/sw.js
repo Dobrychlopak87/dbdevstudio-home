@@ -7,7 +7,10 @@ const ASSETS_TO_CACHE = [
   '/assets/fonts/space-grotesk.woff2',
   '/icons/dbdevstudio-favicon-v2.ico',
   '/icons/dbdevstudio-192-v2.png',
-  '/icons/dbdevstudio-512-v2.png'
+  '/icons/dbdevstudio-512-v2.png',
+  '/images/placeholders/blog/sklep-osiedlowy.avif',
+  '/images/placeholders/blog/restauracja.avif',
+  '/images/placeholders/blog/skrzynka-firmowa.avif'
 ];
 
 self.addEventListener('install', (event) => {

@@ -54,14 +54,14 @@
   ],
   "screenshots": [
     {
-      "src": "/images/screenshots-wide.webp",
+      "src": "/images/screenshots-wide.avif",
       "sizes": "1280x720",
       "type": "image/webp",
       "form_factor": "wide",
       "label": "Strona główna DBDEVSTUDIO"
     },
     {
-      "src": "/images/screenshots-mobile.webp",
+      "src": "/images/screenshots-mobile.avif",
       "sizes": "720x1280",
       "type": "image/webp",
       "form_factor": "narrow",

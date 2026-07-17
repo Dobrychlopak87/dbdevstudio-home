@@ -1,0 +1,20 @@
+INSTRUKCJA DLA MODUŁU AGENTA AI (ZOPTYMALIZOWANA)
+
+Witaj! Twoim zadaniem jest przeprowadzenie ujednolicenia stylu wizualnego oraz rozbudowa nawigacji serwisu DBDEVSTUDIO.pl. Pracujesz na istniejącym kodzie, zachowując najwyższą ostrożność, aby nie naruszyć obecnego układu ani treści.
+
+NAJWAŻNIEJSZE ZASADY:
+1. NIE ZMIENIAJ designu całego menu. Możesz jedynie dodać efekt "hover" (najechanie) oraz dołożyć podmenu (dropdowny) dla sekcji "Usługi" i "Wiedza".
+2. NIE ZMIENIAJ żadnych tekstów ani opisów na stronie (chyba że instrukcja mówi inaczej).
+3. STYLIZACJA: Skup się wyłącznie na ujednoliceniu kolorystyki oraz parametrów narożników (zaokrągleń) w całym serwisie.
+4. GRAFIKA: 
+   - Nie wymieniaj istniejących grafik na nowe.
+   - Wszystkie grafiki zoptymalizuj i zmień ich format na .avif.
+   - JEDYNE nowe grafiki jakie możesz stworzyć, to placeholdery dla sekcji blogowej/wiedzy.
+5. LOGO I IKONY: Muszą pozostać takie same. Możesz jedynie poprawić ich rozdzielczość lub zmienić format na .avif, dbając o ich jakość.
+
+STRUKTURA PODMENU:
+- Usługi: Strony WWW, Aplikacje, Design, Marketing.
+- Wiedza: Słownik pojęć, Artykuły.
+
+WYMAGANY REZULTAT:
+Kompletna, gotowa do wgrania na serwer paczka plików (archiwum .zip) po wprowadzeniu powyższych modyfikacji.
