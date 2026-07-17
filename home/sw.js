@@ -1,19 +1,23 @@
-const CACHE_NAME = 'dbdevstudio-v2';
+const CACHE_NAME = 'dbdevstudio-v4';
 const ASSETS_TO_CACHE = [
   '/',
+  '/assets/app.js',
   '/assets/app.css',
   '/assets/fonts.css',
-  '/assets/fonts/inter.woff2',
-  '/assets/fonts/space-grotesk.woff2',
+  '/assets/enhancements.js',
   '/icons/dbdevstudio-favicon-v2.ico',
   '/icons/dbdevstudio-192-v2.png',
-  '/icons/dbdevstudio-512-v2.png'
+  '/icons/dbdevstudio-512-v2.png',
+  '/images/placeholders/blog/restauracja.avif',
+  '/images/placeholders/blog/sklep-osiedlowy.avif',
+  '/images/placeholders/blog/skrzynka-firmowa.avif',
+  '/images/placeholders/blog/slownik-pojec.avif'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
+      .then((cache) => Promise.allSettled(ASSETS_TO_CACHE.map((asset) => cache.add(asset))))
   );
   self.skipWaiting();
 });
@@ -32,6 +36,8 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
