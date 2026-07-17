@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
-
+Disallow: /api.php
+Disallow: /*.sqlite$
+Disallow: /strefa-klienta/
 Sitemap: https://dbdevstudio.pl/sitemap.xml

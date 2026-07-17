@@ -1,0 +1,51 @@
+# DBDEVSTUDIO
+
+> Studio projektowe z Krosna Odrzańskiego. Projektujemy skuteczne strony WWW, aplikacje mobilne i webowe oraz prowadzimy kampanie marketingowe (SEO, Google Ads, Meta Ads, treści) dla firm z całej Polski.
+
+## Kontakt
+
+- Nazwa: DBDEVSTUDIO
+- E-mail: kontakt@dbdevstudio.pl
+- Telefon: +48 667 856 822
+- Adres: Krosno Odrzańskie, Polska
+- Godziny: pon–pt 09:00–17:00
+- Strona: https://dbdevstudio.pl/
+
+## Usługi
+
+- [Strony WWW](https://dbdevstudio.pl/uslugi/www/): landing pages, sklepy internetowe, systemy CMS, PWA.
+- [Aplikacje](https://dbdevstudio.pl/uslugi/aplikacje/): aplikacje mobilne iOS/Android, aplikacje webowe, panele SaaS.
+- [Marketing](https://dbdevstudio.pl/uslugi/marketing/): SEO, Google Ads, Meta Ads, content marketing.
+- [Design](https://dbdevstudio.pl/uslugi/design/): branding, identyfikacja wizualna, projektowanie UI/UX.
+
+## Kluczowe strony
+
+- [Strona główna](https://dbdevstudio.pl/): przegląd oferty i produkty flagowe.
+- [Studio](https://dbdevstudio.pl/studio/): informacje o zespole i metodyce pracy.
+- [Portfolio](https://dbdevstudio.pl/portfolio/): zrealizowane projekty i case studies.
+- [Cennik](https://dbdevstudio.pl/cennik/): pakiety w cenach netto i brutto, bez ukrytych kosztów.
+- [Blog / Wiedza](https://dbdevstudio.pl/blog/): artykuły branżowe i porady.
+- [FAQ](https://dbdevstudio.pl/faq/): odpowiedzi na najczęstsze pytania.
+- [Kontakt](https://dbdevstudio.pl/kontakt/): formularz kontaktowy i bezpłatna wycena.
+
+## Portfolio (produkty własne)
+
+- [KURIER AI](https://dbdevstudio.pl/portfolio/kurier-ai/): planowanie i optymalizacja tras kurierów z wykorzystaniem AI.
+- [TikTok Reel Studio Pro](https://dbdevstudio.pl/portfolio/tiktok-reel-studio-pro/): narzędzie do kreacji i publikacji krótkich filmów wideo.
+- [nano4HR](https://dbdevstudio.pl/portfolio/nano4hr/): system ewidencji czasu pracy dla małych i średnich firm.
+
+## Zasady dostępu dla agentów AI
+
+- Dostępne języki: polski (domyślny), angielski (?lang=en).
+- Kanoniczny hostname: dbdevstudio.pl (HTTPS wymagane).
+- Sitemap: https://dbdevstudio.pl/sitemap.xml
+- Robots: https://dbdevstudio.pl/robots.txt
+- API prywatne (klienci): /api.php - niedostępne dla botów.
+
+## Informacje prawne
+
+- [Polityka prywatności](https://dbdevstudio.pl/polityka-prywatnosci/)
+- [Cookies](https://dbdevstudio.pl/cookies/)
+- [Regulamin](https://dbdevstudio.pl/regulamin/)
+- [RODO](https://dbdevstudio.pl/rodo/)
+- [Deklaracja dostępności](https://dbdevstudio.pl/dostepnosc/)
