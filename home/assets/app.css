@@ -15,6 +15,11 @@
     --color-accent: #ffcc33;
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
     --font-display: 'Space Grotesk', var(--font-sans);
+    /* Ujednolicona skala zaokrągleń — wartości już obecne w designie strony */
+    --radius-sm: 0.5rem;   /* detale (skip-link, wąskie elementy) */
+    --radius-md: 0.75rem;  /* pola formularzy (rounded-xl) */
+    --radius-lg: 1rem;     /* karty i dialogi (rounded-2xl) */
+    --radius-full: 9999px; /* przyciski (rounded-full) */
   }
 
   * {
@@ -145,7 +150,7 @@
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -186,7 +191,7 @@ label {
   color: #111;
   padding: 0.75rem 1rem;
   border: 2px solid var(--color-primary);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   transition: top 0.2s;
 }
@@ -206,4 +211,103 @@ label {
 
 .breadcrumbs [aria-current="page"] {
   @apply text-[var(--color-text)] font-medium;
+}
+
+/* ------------------------------------------------------------------
+   Podmenu nawigacji (Usługi / Wiedza) + hover linków menu.
+   Minimalna ingerencja: istniejący pasek i linki zostają,
+   dołożony jest wyłącznie panel dropdownu oraz płynny hover.
+   Kolory i narożniki wyłącznie z istniejącej palety / skali (:root).
+   ------------------------------------------------------------------ */
+
+/* Płynna zmiana koloru linków menu (paleta strony) */
+header nav a {
+  transition: color 0.2s ease;
+}
+
+header nav a:hover,
+header nav a:focus-visible,
+.nav-parent-link:hover,
+.nav-parent-link:focus-visible {
+  color: var(--color-primary);
+}
+
+/* Kontener pozycji z podmenu — pozycjonuje panel, nie zmienia layoutu paska */
+.nav-has-dropdown {
+  position: relative;
+}
+
+/* Subtelne podkreślenie linku nadrzędnego na hover */
+.nav-parent-link {
+  position: relative;
+}
+
+.nav-parent-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  opacity: 0;
+  transform: scaleX(0.5);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.nav-parent-link:hover::after,
+.nav-parent-link:focus-visible::after,
+.nav-has-dropdown:focus-within .nav-parent-link::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Panel podmenu */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 15rem;
+  max-width: 20rem;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 0.5rem);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.nav-has-dropdown:hover .nav-dropdown,
+.nav-has-dropdown:focus-within .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.nav-dropdown a {
+  display: block;
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  white-space: normal;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-dropdown a:hover,
+.nav-dropdown a:focus-visible {
+  background: rgba(61, 91, 255, 0.12);
+  color: var(--color-primary);
 }

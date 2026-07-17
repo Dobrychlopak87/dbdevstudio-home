@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dbdevstudio-v2';
+const CACHE_NAME = 'dbdevstudio-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/assets/app.css',
