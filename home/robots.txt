@@ -1,4 +1,30 @@
 User-agent: *
 Allow: /
+Disallow: /client-files/
+Disallow: /api.php
+Disallow: /strefa-klienta/
+Disallow: /reset-hasla/
 
 Sitemap: https://dbdevstudio.pl/sitemap.xml
+
+# Crawl-delay for aggressive bots
+Crawl-delay: 1
+
+# Host
+Host: https://dbdevstudio.pl
+
+# Security & SEO: disallow sensitive
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Allow all for major engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1

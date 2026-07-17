@@ -1,0 +1,7 @@
+*.zip
+*.tar.gz
+!*.min.*
+client-files/.ratelimit/*.json
+client-files/.ratelimit/*.log
+.DS_Store
+Thumbs.db

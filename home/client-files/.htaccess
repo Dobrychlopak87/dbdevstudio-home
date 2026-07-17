@@ -1,0 +1,18 @@
+# Block direct HTTP access to client files
+Require all denied
+
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order deny,allow
+  Deny from all
+</IfModule>
+
+# Disable indexes
+Options -Indexes
+
+# No execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps|pl|py|cgi)$">
+  Require all denied
+</FilesMatch>

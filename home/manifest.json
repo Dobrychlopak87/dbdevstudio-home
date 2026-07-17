@@ -1,19 +1,21 @@
 {
   "name": "DBDEVSTUDIO — Strony, aplikacje i marketing",
   "short_name": "DBDEVSTUDIO",
-  "description": "Studio projektowe z Krośna Odrzańskiego: strony WWW, aplikacje, SEO i marketing digital.",
+  "description": "Studio projektowe z Krośna Odrzańskiego: strony WWW, aplikacje, SEO i marketing digital. RODO, PWA, WCAG.",
   "id": "/",
-  "start_url": "/",
+  "start_url": "/?utm_source=pwa&utm_medium=manifest",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
   "orientation": "any",
   "background_color": "#0E0E11",
   "theme_color": "#3D5BFF",
   "lang": "pl",
-  "categories": [
-    "business",
-    "productivity"
-  ],
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "launch_handler": { "client_mode": ["navigate-existing", "auto"] },
+  "edge_side_panel": { "preferred_width": 400 },
+  "handle_links": "preferred",
   "icons": [
     {
       "src": "/icons/dbdevstudio-48-v2.png",
@@ -58,20 +60,21 @@
       "sizes": "1280x720",
       "type": "image/webp",
       "form_factor": "wide",
-      "label": "Strona główna DBDEVSTUDIO"
+      "label": "Strona główna DBDEVSTUDIO - wersja desktop"
     },
     {
       "src": "/images/screenshots-mobile.webp",
       "sizes": "720x1280",
       "type": "image/webp",
       "form_factor": "narrow",
-      "label": "DBDEVSTUDIO na telefonie"
+      "label": "DBDEVSTUDIO na telefonie - wersja mobilna"
     }
   ],
   "shortcuts": [
     {
       "name": "Bezpłatna wycena",
       "short_name": "Wycena",
+      "description": "Zamów bezpłatną wycenę projektu w 24h",
       "url": "/kontakt/",
       "icons": [
         {
@@ -84,6 +87,7 @@
     {
       "name": "Portfolio",
       "short_name": "Portfolio",
+      "description": "Zobacz nasze realizacje",
       "url": "/realizacje/",
       "icons": [
         {
@@ -96,6 +100,7 @@
     {
       "name": "Cennik",
       "short_name": "Cennik",
+      "description": "Sprawdź cennik usług",
       "url": "/cennik/",
       "icons": [
         {
@@ -104,6 +109,22 @@
           "type": "image/png"
         }
       ]
+    },
+    {
+      "name": "Strefa Klienta",
+      "short_name": "Klient",
+      "description": "Zaloguj do strefy klienta",
+      "url": "/strefa-klienta/",
+      "icons": [
+        {
+          "src": "/icons/dbdevstudio-96-v2.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     }
-  ]
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "shortcuts_icons": true
 }
