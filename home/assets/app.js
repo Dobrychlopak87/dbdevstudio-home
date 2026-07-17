@@ -603,8 +603,44 @@
     `, { breadcrumbs: `<nav class="breadcrumbs"><a href="/" data-nav>Strona główna</a> › <span aria-current="page">404</span></nav>` });
   }
 
+  // ---- Image display improvements (restored originals, improved method) ----
+  function enhanceImagesDisplay(root=document){
+    const placeholder = '/images/placeholders/placeholder-800x600.webp';
+    root.querySelectorAll('img').forEach(img=>{
+      if (img._enhanced) return; img._enhanced=true;
+      // Ensure alt, loading, decoding already set via enhancements.js but double-check
+      if (!img.hasAttribute('loading')) img.loading='lazy';
+      if (!img.hasAttribute('decoding')) img.decoding='async';
+      // Prevent CLS: ensure width/height or aspect-ratio
+      if (!img.hasAttribute('width')) img.setAttribute('width','600');
+      if (!img.hasAttribute('height')) img.setAttribute('height','400');
+      // Error fallback to placeholder (preserves layout)
+      img.addEventListener('error', ()=>{
+        if (img.dataset.fallbackAttempted) return;
+        img.dataset.fallbackAttempted='1';
+        // Try svg fallback if webp fails (original images may be webp, fallback to svg placeholder)
+        const name = img.src.split('/').pop().replace('.webp','.svg');
+        // Check if svg placeholder exists (hero, portfolio)
+        const svgPath = img.src.replace('.webp','.svg');
+        // For hero/portfolio we have svg placeholders now
+        if (img.src.includes('/hero/') || img.src.includes('/portfolio/')) {
+          img.src = svgPath;
+        } else {
+          img.src = placeholder;
+        }
+        img.style.background='var(--color-bg-card)';
+        img.style.objectFit='cover';
+      }, {once:false});
+      // Successful load: add loaded class for fade-in
+      img.addEventListener('load', ()=>{ img.classList.add('loaded'); }, {once:true});
+    });
+  }
+
   // ---- After render hooks ----
   function afterRender(path) {
+    // Improve image display first
+    enhanceImagesDisplay();
+
     // Attach link handler delegation
     document.querySelectorAll('a[data-nav]').forEach(a=>{
       if (a._bound) return; a._bound=true;

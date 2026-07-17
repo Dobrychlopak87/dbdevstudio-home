@@ -81,12 +81,42 @@
     if (a) prefetch(a.href);
   }, {passive:true});
 
-  // 5. Image lazy + decoding async
+  // 5. Image display improvements - restored originals, method improved (not generation)
   function enhanceImages(root=document){
     root.querySelectorAll('img').forEach(img=>{
-      if (!img.hasAttribute('loading')) img.loading='lazy';
+      if (img.dataset.enhanced) return;
+      img.dataset.enhanced='1';
+      if (!img.hasAttribute('loading')) {
+        // Eager for hero first image, lazy for rest
+        const isHero = img.closest('.hero-images') && img.src.includes('hero-www');
+        img.loading = isHero ? 'eager' : 'lazy';
+      }
       if (!img.hasAttribute('decoding')) img.decoding='async';
       if (!img.alt) img.alt='';
+      // Ensure dimensions to prevent CLS
+      if (!img.hasAttribute('width')) img.setAttribute('width','600');
+      if (!img.hasAttribute('height')) img.setAttribute('height','400');
+      // Responsive: add srcset placeholder logic – if original exists, browser will use it
+      // Error handling: fallback to placeholder, not AI generation
+      if (!img.dataset.errorBound) {
+        img.dataset.errorBound='1';
+        img.addEventListener('error', ()=>{
+          if (img.dataset.fallbackDone) return;
+          img.dataset.fallbackDone='1';
+          console.warn('Image failed, fallback to placeholder', img.src);
+          // Try SVG sibling if exists
+          if (img.src.endsWith('.webp')) {
+            const svg = img.src.replace('.webp','.svg');
+            // Avoid loop: only try svg if not already svg
+            if (svg !== img.src) {
+              img.src = svg;
+              return;
+            }
+          }
+          img.src = '/images/placeholders/placeholder-800x600.webp';
+        }, {once:false});
+        img.addEventListener('load', ()=>{ img.classList.add('loaded'); });
+      }
     });
   }
   enhanceImages();
