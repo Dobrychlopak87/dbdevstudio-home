@@ -11,3 +11,4 @@ Thumbs.db
 !*.min.*
 client-files/.ratelimit/*.json
 client-files/.ratelimit/*.log
+image-search/
