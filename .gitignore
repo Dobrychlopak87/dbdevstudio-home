@@ -5,3 +5,4 @@ client-files/.ratelimit/*.json
 client-files/.ratelimit/*.log
 .DS_Store
 Thumbs.db
+SHA256SUMS.txt
